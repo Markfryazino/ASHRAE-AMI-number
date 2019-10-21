@@ -10,18 +10,18 @@ def fillna_by_time(site_id_data, column):
     # We should have a first value not to be NaN
     # to fill others
     site_id_data = site_id_data.copy()
-    if np.isnan(site_id_data[column][0]):
+    if np.isnan(site_id_data[column][site_id_data.index[0]]):
         for i in site_id_data[column]:
             if not np.isnan(i):
-                site_id_data.loc[site_id_data.index == 0, column] = i
+                site_id_data.loc[site_id_data.index[0], column] = i
                 break
-                
-        assert np.isnan(site_id_data[column][0]) == False
+
+        assert np.isnan(site_id_data[column][site_id_data.index[0]]) == False
 
     # Now we start with index 1
     # We fill column in such a way that any value has
     # non-NaN value on previous index
-    for i in range(1, len(site_id_data)):
+    for i in site_id_data.index[1:]:
         if np.isnan(site_id_data[column][i]):
             site_id_data.loc[site_id_data.index == i, column] = site_id_data[column][i - 1]
     
